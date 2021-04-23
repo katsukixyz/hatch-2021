@@ -1,0 +1,459 @@
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Tabs, Form, Input, Radio, Checkbox, Button, Space } from "antd";
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
+
+const { TabPane } = Tabs;
+
+export default function App() {
+  const [form] = Form.useForm();
+
+  const [geneChanges, setGeneChanges] = useState(null);
+  const [parentsHistory, setParentsHistory] = useState(null);
+  const [motherParentsHistory, setMotherParentsHistory] = useState(null);
+  const [fatherParentsHistory, setFatherParentsHistory] = useState(null);
+  const [auntUncleHistory, setAuntUncleHistory] = useState(null);
+
+  const radioStyle = {
+    display: "block",
+    height: "30px",
+    lineHeight: "30px",
+  };
+  const checkboxStyle = {
+    // display: "block",
+    // marginLeft: 0,
+    // height: "30px",
+    // lineHeight: "30px",
+  };
+
+  return (
+    <div className="App">
+      <div className="tabs">
+        <Tabs defaultActiveKey="1" onChange={null} centered>
+          <TabPane tab="Predict Patient Cancer Risk" key="1">
+            <div className="historyForm">
+              <Form layout="vertical" form={form}>
+                <Form.Item
+                  required
+                  label="Have you mapped your family's health history back one or two generations?"
+                  name="healthHistory"
+                >
+                  <Radio.Group>
+                    <Radio style={radioStyle} value="yes">
+                      Yes, I've researched my family's health and have the
+                      information available.
+                    </Radio>
+                    <Radio style={radioStyle} value="unsure">
+                      I'm not sure how accurate my family's health information
+                      is but I'll do the best I can.
+                    </Radio>
+                    <Radio style={radioStyle} value="no">
+                      No, I haven't been able to do the research, so I'll be
+                      using my best recollections.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                  required
+                  label="Are you located in the United States?"
+                  name="usLocation"
+                >
+                  <Radio.Group>
+                    <Radio style={radioStyle} value="yes">
+                      Yes
+                    </Radio>
+                    <Radio style={radioStyle} value="no">
+                      No
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                  required
+                  label="Are you of Ashkenazi Jewish descent?"
+                  name="jewDescent"
+                >
+                  <Radio.Group>
+                    <Radio style={radioStyle} value="yes">
+                      Yes
+                    </Radio>
+                    <Radio style={radioStyle} value="no">
+                      No
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item required label="Race" name="race">
+                  <Checkbox.Group>
+                    <Checkbox style={checkboxStyle} value="nativeAmerican">
+                      American Indian or Alaska Native
+                    </Checkbox>
+                    <Checkbox style={checkboxStyle} value="asian">
+                      Asian
+                    </Checkbox>
+                    <Checkbox style={checkboxStyle} value="black">
+                      Black or African American
+                    </Checkbox>
+                    <Checkbox style={checkboxStyle} value="white">
+                      White
+                    </Checkbox>
+                  </Checkbox.Group>
+                </Form.Item>
+                <Form.Item
+                  required
+                  label="Are you of Hispanic, Latino, or Spanish origin?"
+                  name="hispanic"
+                >
+                  <Radio.Group>
+                    <Radio style={radioStyle} value="yes">
+                      Yes
+                    </Radio>
+                    <Radio style={radioStyle} value="no">
+                      No
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                  required
+                  label="Have you been tested for gene changes?"
+                  name="geneTest"
+                >
+                  <Radio.Group
+                    value={geneChanges === null ? "" : geneChanges}
+                    onChange={({ target }) => setGeneChanges(target.value)}
+                  >
+                    <Radio style={radioStyle} value={true}>
+                      Yes, I have been. I'll list the gene changes identified
+                      below.
+                    </Radio>
+                    <Radio style={radioStyle} value={false}>
+                      No, I've never had genetic tests before.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                {geneChanges === true ? (
+                  <Form.Item
+                    required
+                    label="Please provide the gene changes, entered individually."
+                    name="gene"
+                  >
+                    <Form.List name="geneName">
+                      {(fields, { add, remove }) => {
+                        return (
+                          <div>
+                            {fields.map((field) => (
+                              <Space
+                                key={field.key}
+                                style={{ display: "flex" }}
+                                align="baseline"
+                              >
+                                <Form.Item
+                                  name={[field.name, "geneName"]}
+                                  fieldKey={[field.fieldKey, "geneName"]}
+                                  rules={[
+                                    { required: true, message: "Empty field" },
+                                  ]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                                <MinusCircleOutlined
+                                  onClick={() => remove(field.name)}
+                                />
+                              </Space>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add gene
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        );
+                      }}
+                    </Form.List>
+                  </Form.Item>
+                ) : null}
+                <Form.Item
+                  required
+                  name="parentsHistory"
+                  label="Has your mother or father been diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+                >
+                  <Radio.Group
+                    value={parentsHistory === null ? "" : parentsHistory}
+                    onChange={({ target }) => setParentsHistory(target.value)}
+                  >
+                    <Radio style={radioStyle} value={true}>
+                      Yes, one or both of my parents have been diagnosed with
+                      cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value={false}>
+                      No, neither of my parents have been diagnosed with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value="unsure">
+                      I don't know or remember.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                {parentsHistory === true ? (
+                  <Form.Item required name="parentsGene">
+                    <Form.List name="parentsGene">
+                      {(fields, { add, remove }) => {
+                        return (
+                          <div>
+                            {fields.map((field) => (
+                              <Space
+                                key={field.key}
+                                style={{ display: "flex" }}
+                                align="baseline"
+                              >
+                                <Form.Item
+                                  {...field}
+                                  name={[field.name, "first"]}
+                                  fieldKey={[field.fieldKey, "first"]}
+                                  rules={[
+                                    { required: true, message: "Empty field" },
+                                  ]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                                <MinusCircleOutlined
+                                  onClick={() => remove(field.name)}
+                                />
+                              </Space>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add parent
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        );
+                      }}
+                    </Form.List>
+                  </Form.Item>
+                ) : null}
+                <Form.Item
+                  required
+                  name="motherParents"
+                  label="Were your mother's parents ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+                >
+                  <Radio.Group
+                    value={
+                      motherParentsHistory === null ? "" : motherParentsHistory
+                    }
+                    onChange={({ target }) =>
+                      setMotherParentsHistory(target.value)
+                    }
+                  >
+                    <Radio style={radioStyle} value={true}>
+                      Yes, one or both of my mother's parents have been
+                      diagnosed with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value={false}>
+                      No, neither of my mother's parents have been diagnosed
+                      with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value="unsure">
+                      I don't know or remember.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                {motherParentsHistory === true ? (
+                  <Form.Item required name="motherParentsGene">
+                    <Form.List name="motherParentsGene">
+                      {(fields, { add, remove }) => {
+                        return (
+                          <div>
+                            {fields.map((field) => (
+                              <Space
+                                key={field.key}
+                                style={{ display: "flex" }}
+                                align="baseline"
+                              >
+                                <Form.Item
+                                  {...field}
+                                  name={[field.name, "first"]}
+                                  fieldKey={[field.fieldKey, "first"]}
+                                  rules={[
+                                    { required: true, message: "Empty field" },
+                                  ]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                                <MinusCircleOutlined
+                                  onClick={() => remove(field.name)}
+                                />
+                              </Space>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add maternal grandparent
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        );
+                      }}
+                    </Form.List>
+                  </Form.Item>
+                ) : null}
+                <Form.Item
+                  required
+                  name="fatherParents"
+                  label="Were your father's parents ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+                >
+                  <Radio.Group
+                    value={
+                      fatherParentsHistory === null ? "" : fatherParentsHistory
+                    }
+                    onChange={({ target }) =>
+                      setFatherParentsHistory(target.value)
+                    }
+                  >
+                    <Radio style={radioStyle} value={true}>
+                      Yes, one or both of my father's parents have been
+                      diagnosed with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value={false}>
+                      No, neither of my father's parents have been diagnosed
+                      with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value="unsure">
+                      I don't know or remember.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                {fatherParentsHistory === true ? (
+                  <Form.Item required name="fatherParentsGene">
+                    <Form.List name="fatherParentsGene">
+                      {(fields, { add, remove }) => {
+                        return (
+                          <div>
+                            {fields.map((field) => (
+                              <Space
+                                key={field.key}
+                                style={{ display: "flex" }}
+                                align="baseline"
+                              >
+                                <Form.Item
+                                  {...field}
+                                  name={[field.name, "first"]}
+                                  fieldKey={[field.fieldKey, "first"]}
+                                  rules={[
+                                    { required: true, message: "Empty field" },
+                                  ]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                                <MinusCircleOutlined
+                                  onClick={() => remove(field.name)}
+                                />
+                              </Space>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add paternal grandparent
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        );
+                      }}
+                    </Form.List>
+                  </Form.Item>
+                ) : null}
+                <Form.Item
+                  required
+                  name="auntsUncles"
+                  label="Were your parents' brothers or sisters ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+                >
+                  <Radio.Group
+                    value={auntUncleHistory === null ? "" : auntUncleHistory}
+                    onChange={({ target }) => setAuntUncleHistory(target.value)}
+                  >
+                    <Radio style={radioStyle} value={true}>
+                      Yes, my aunt(s) or uncle(s) were diagnosed with cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value={false}>
+                      No, my aunt(s) or uncle(s) have never been diagnosed with
+                      cancer.
+                    </Radio>
+                    <Radio style={radioStyle} value="unsure">
+                      I don't know or remember.
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                {auntUncleHistory === true ? (
+                  <Form.Item required name="auntsUnclesGene">
+                    <Form.List name="auntsUnclesGene">
+                      {(fields, { add, remove }) => {
+                        return (
+                          <div>
+                            {fields.map((field) => (
+                              <Space
+                                key={field.key}
+                                style={{ display: "flex" }}
+                                align="baseline"
+                              >
+                                <Form.Item
+                                  {...field}
+                                  name={[field.name, "first"]}
+                                  fieldKey={[field.fieldKey, "first"]}
+                                  rules={[
+                                    { required: true, message: "Empty field" },
+                                  ]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                                <MinusCircleOutlined
+                                  onClick={() => remove(field.name)}
+                                />
+                              </Space>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add aunt/uncle
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        );
+                      }}
+                    </Form.List>
+                  </Form.Item>
+                ) : null}
+              </Form>
+            </div>
+          </TabPane>
+          <TabPane tab="Enter Patient Information" key="2">
+            joe 2
+          </TabPane>
+          <TabPane tab="View Database" key="3">
+            joe 2
+          </TabPane>
+        </Tabs>
+      </div>
+    </div>
+  );
+}
