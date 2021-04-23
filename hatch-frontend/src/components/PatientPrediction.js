@@ -42,13 +42,18 @@ const PatientPrediction = () => {
     // lineHeight: "30px",
   };
 
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
   return (
     <div className="historyForm">
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item
           required
           label="Have you mapped your family's health history back one or two generations?"
           name="healthHistory"
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group>
             <Radio style={radioStyle} value="yes">
@@ -69,6 +74,7 @@ const PatientPrediction = () => {
           required
           label="Are you located in the United States?"
           name="usLocation"
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group>
             <Radio style={radioStyle} value="yes">
@@ -93,7 +99,12 @@ const PatientPrediction = () => {
             </Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item required label="Race" name="race">
+        <Form.Item
+          required
+          label="Race"
+          name="race"
+          rules={[{ required: true, message: "Empty field" }]}
+        >
           <Checkbox.Group>
             <Checkbox style={checkboxStyle} value="nativeAmerican">
               American Indian or Alaska Native
@@ -113,6 +124,7 @@ const PatientPrediction = () => {
           required
           label="Are you of Hispanic, Latino, or Spanish origin?"
           name="hispanic"
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group>
             <Radio style={radioStyle} value="yes">
@@ -126,6 +138,7 @@ const PatientPrediction = () => {
         <Form.Item
           required
           label="Have you been tested for gene changes?"
+          rules={[{ required: true, message: "Empty field" }]}
           name="geneTest"
         >
           <Radio.Group
@@ -146,7 +159,7 @@ const PatientPrediction = () => {
             label="Please provide the gene names, entered individually."
             name="gene"
           >
-            <Form.List name="geneName" initialValue={[{ name: "" }]}>
+            <Form.List name="geneName" initialValue={[{ geneName: "" }]}>
               {(fields, { add, remove }) => {
                 return (
                   <div>
@@ -191,6 +204,7 @@ const PatientPrediction = () => {
           required
           name="parentsHistory"
           label="Has your mother or father been diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group
             value={parentsHistory === null ? "" : parentsHistory}
@@ -283,6 +297,7 @@ const PatientPrediction = () => {
           required
           name="motherParents"
           label="Were your mother's parents ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group
             value={motherParentsHistory === null ? "" : motherParentsHistory}
@@ -381,6 +396,7 @@ const PatientPrediction = () => {
           required
           name="fatherParents"
           label="Were your father's parents ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group
             value={fatherParentsHistory === null ? "" : fatherParentsHistory}
@@ -479,6 +495,7 @@ const PatientPrediction = () => {
           required
           name="auntsUncles"
           label="Were your parents' brothers or sisters ever diagnosed with cancer? Only 'blood' relatives need to be considered for this survey."
+          rules={[{ required: true, message: "Empty field" }]}
         >
           <Radio.Group
             value={auntUncleHistory === null ? "" : auntUncleHistory}
@@ -567,6 +584,11 @@ const PatientPrediction = () => {
             </Form.List>
           </Form.Item>
         ) : null}
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );
