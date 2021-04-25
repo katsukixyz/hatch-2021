@@ -37,7 +37,6 @@ def levenshteinDistance(s1, s2):
     return distances[-1]
 
 def add_data(jsonobj):
-    print(jsonobj)
     pandas_dict = {}
     pandas_dict['Pathogenic?'] = jsonobj['pathogenic']
     for i in range(len(jsonobj['personalHistory'])):

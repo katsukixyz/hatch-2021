@@ -256,7 +256,7 @@ const PatientInformation = () => {
         {personalHistory === true ? (
           <Form.Item
             required
-            label="Please provide the type of cancer and age of diagnosis. If the patient has had multiple cancers, separate each cancer/age using a comma."
+            label="Please provide the type of cancer and age of diagnosis. Enter each cancer type individually."
             name="personalCancer"
           >
             <Form.List
