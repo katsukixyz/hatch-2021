@@ -3,7 +3,7 @@ import "./App.css";
 import PatientPrediction from "./components/PatientPrediction";
 import PatientInformation from "./components/PatientInformation";
 import PatientDatabase from "./components/PatientDatabase";
-import { Tabs, Layout } from "antd";
+import { Tabs, Layout, Row, Menu } from "antd";
 import logo from "./hatch2021.png";
 import "antd/dist/antd.css";
 
@@ -17,7 +17,7 @@ export default function App() {
       <div className="tabs">
         <Layout>
           <Header>
-            <img style={{ width: "40px", height: "40px" }} src={logo} />
+            <img style={{ width: "140px", height: "70px" }} src={logo} />
           </Header>
           <Content style={{ padding: "50px 50px 0px 50px" }}>
             <Tabs

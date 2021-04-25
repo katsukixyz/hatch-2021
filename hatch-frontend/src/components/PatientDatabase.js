@@ -87,7 +87,7 @@ const PatientDatabase = ({ tableData, setTableData }) => {
   useEffect(() => {
     setLoading(true);
     getData();
-  }, [getData]);
+  }, []);
   return (
     <div className="tableElement">
       <Button loading={loading} onClick={() => getData()}>
