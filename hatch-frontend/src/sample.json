@@ -1,0 +1,27 @@
+{
+  "pathogenic": true,
+  "personalHistory": [
+    {
+      "type": "leukemia",
+      "age": 50
+    },
+    {
+      "type": "breast",
+      "age": 58
+    }
+  ],
+  "relHistory": [
+    {
+      "relationship": "father",
+      "type": "colon, testicular",
+      "age": "60, 80"
+    },
+    {
+      "relationship": "mother",
+      "type": "breast",
+      "age": "59"
+    }
+  ],
+  "race": "asian",
+  "label": "strong_personal"
+}
